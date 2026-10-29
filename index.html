@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<!-- Tienda generada con Harvys, asistente de e-commerce creado por el Profesor Harvey Sanabria -->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KMVetPetshop — [POR COMPLETAR]</title>
+<meta name="description" content="Servicios de baño e higiene, valoraciones médicas y recomendaciones de cuidado y bienestar para mascotas. Venta de productos de aseo, alimentos, juguetes, ropa y accesorios.">
+<meta name="generator" content="Harvys — asistente de e-commerce del Profesor Harvey Sanabria">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="anim-media tarj-elevadas modo-claro">
+
+<!-- MODAL PAGO -->
+<div class="modal-overlay" id="modal-pago" onclick="modalClickFuera(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-head"><h3>Confirmar pago</h3><button class="modal-cerrar" onclick="cerrarModal()" aria-label="Cerrar">✕</button></div>
+    <div class="modal-body">
+      <div class="modal-total"><span class="tl">Total a pagar</span><span class="tm" id="modal-total-monto">$0</span></div>
+      <div class="pago-metodos" id="pago-metodos"></div>
+      <div class="pago-datos" id="pago-datos">
+        <div class="pd-label">Transferir a este número</div>
+        <div class="pd-numero" id="pd-numero"></div>
+        <div class="pd-nombre" id="pd-nombre"></div>
+        <button class="btn-copiar" onclick="copiarNumero()">📋 Copiar número</button>
+      </div>
+      <div class="pasos">
+        <div class="paso"><div class="paso-num">1</div><div class="paso-txt" id="paso-1"></div></div>
+        <div class="paso"><div class="paso-num">2</div><div class="paso-txt">Toca <strong>"Confirmar y enviar"</strong> — se abre WhatsApp con tu pedido</div></div>
+        <div class="paso"><div class="paso-num">3</div><div class="paso-txt" id="paso-3"></div></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <a href="#" target="_blank" rel="noopener" class="btn-wsp" onclick="return prepararWsp(this)">✅ Confirmar y enviar por WhatsApp</a>
+      <button class="btn-seguir" onclick="cerrarModal()">← Seguir comprando</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" onclick="cerrarCarrito()"></div>
+
+<!-- VISOR DE FOTOS -->
+<div class="visor" id="visor" role="dialog" aria-modal="true" aria-label="Foto del producto">
+  <figure class="visor-caja">
+    <button class="visor-cerrar" aria-label="Cerrar">✕</button>
+    <div class="visor-foto" id="visor-foto"><img id="visor-img" alt=""></div>
+    <figcaption><strong id="visor-nombre"></strong><span id="visor-precio"></span></figcaption>
+    <div class="visor-ayuda">Toca o haz clic en la foto para ampliarla más</div>
+  </figure>
+</div>
+
+<button class="carrito-fab" onclick="toggleCarrito()" id="fab" aria-label="Abrir carrito">🛒<span class="carrito-badge" id="badge">0</span></button>
+
+<div class="carrito-panel" id="panel-carrito">
+  <div class="panel-header"><h3>Tu consulta de productos y servicios</h3><button class="btn-cerrar" onclick="cerrarCarrito()" aria-label="Cerrar carrito">✕</button></div>
+  <ul id="lista-carrito"></ul>
+  <div class="panel-footer">
+    <div class="total-row"><span class="total-lbl">Total</span><span class="total-monto" id="total">$0</span></div>
+    <div class="panel-btns"><button class="btn-vaciar" onclick="vaciarCarrito()">Vaciar</button><button class="btn-pagar" onclick="pagar()">Consultar por WhatsApp</button></div>
+  </div>
+</div>
+
+<!-- ASISTENTE DE LA TIENDA (responde con los datos de esta tienda) -->
+<span class="as-aviso" id="as-aviso">¿Te ayudo? 👋</span>
+<button class="as-burbuja" id="as-burbuja" aria-label="Abrir el asistente de la tienda"><svg class="as-robot" viewBox="0 0 64 64" aria-hidden="true">
+      <line x1="32" y1="5" x2="32" y2="14" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <circle class="as-antena" cx="32" cy="5" r="4" fill="currentColor"/>
+      <rect x="4" y="27" width="6" height="12" rx="3" fill="currentColor"/>
+      <rect x="54" y="27" width="6" height="12" rx="3" fill="currentColor"/>
+      <rect x="10" y="14" width="44" height="38" rx="15" fill="currentColor"/>
+      <rect x="16" y="21" width="32" height="20" rx="10" fill="var(--as-cara)"/>
+      <circle class="as-ojo" cx="25" cy="31" r="4" fill="currentColor"/>
+      <circle class="as-ojo" cx="39" cy="31" r="4" fill="currentColor"/>
+      <path d="M26 45q6 4 12 0" stroke="var(--as-cara)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </svg></button>
+<div class="as-panel" id="as-panel" role="dialog" aria-label="Kimi">
+  <div class="as-cabecera">
+    <div class="as-avatar"><svg class="as-robot" viewBox="0 0 64 64" aria-hidden="true">
+      <line x1="32" y1="5" x2="32" y2="14" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <circle class="as-antena" cx="32" cy="5" r="4" fill="currentColor"/>
+      <rect x="4" y="27" width="6" height="12" rx="3" fill="currentColor"/>
+      <rect x="54" y="27" width="6" height="12" rx="3" fill="currentColor"/>
+      <rect x="10" y="14" width="44" height="38" rx="15" fill="currentColor"/>
+      <rect x="16" y="21" width="32" height="20" rx="10" fill="var(--as-cara)"/>
+      <circle class="as-ojo" cx="25" cy="31" r="4" fill="currentColor"/>
+      <circle class="as-ojo" cx="39" cy="31" r="4" fill="currentColor"/>
+      <path d="M26 45q6 4 12 0" stroke="var(--as-cara)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </svg></div>
+    <div><strong>Kimi</strong><small><i></i> En línea</small></div>
+    <button id="as-cerrar" aria-label="Cerrar el asistente">✕</button>
+  </div>
+  <div class="as-mensajes" id="as-mensajes"></div>
+  <div class="as-chips" id="as-chips"></div>
+  <form class="as-form" id="as-form">
+    <input id="as-input" placeholder="Escribe tu pregunta…" autocomplete="off" aria-label="Tu pregunta">
+    <button type="submit" aria-label="Enviar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg></button>
+  </form>
+</div>
+
+<header class="hero hero-centrado">
+  <div class="hero-bg efecto-puntos"></div>
+  <div class="hero-content">
+    <div>
+      
+      <div class="hero-badge">🐾 Cuidado para mascotas en Bogotá</div>
+      <h1>KMVet<span>Petshop</span></h1>
+      <p class="hero-sub">Baño, atención médica y productos para el cuidado de tu mascota. Conoce nuestros servicios y consulta por WhatsApp.</p>
+      <a href="#catalogo" class="btn-hero">Explorar productos y servicios
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <div class="hero-stats"><div class="hero-stat"><div class="num">7</div><div class="lbl">Productos y servicios</div></div><div class="hero-stat"><div class="num">Suba</div><div class="lbl">Zona de domicilios</div></div><div class="hero-stat"><div class="num">1 día hábil</div><div class="lbl">Entrega aproximada</div></div></div>
+    </div>
+    </div>
+  <div class="hero-scroll"><div></div></div>
+</header>
+
+<section class="banner-sec">
+  <div class="banner-glow"></div>
+  <div class="banner-content">
+    <div class="sec-label">Cuidado y bienestar</div>
+    <h2>Todo para cuidar a <em>tu mascota</em></h2>
+    <p>Encuentra servicios de baño, valoraciones médicas, alimentos, juguetes y ropa. Domicilios en Suba y recogida en el negocio. Consulta las tarifas finales y la disponibilidad antes de confirmar tu pedido.</p>
+    <div class="banner-chips"><span class="chip">Domicilios en Suba</span><span class="chip">Recogida en el negocio</span><span class="chip">Contraentrega desde $50.000</span><span class="chip">Atención de lunes a sábado</span></div>
+  </div>
+</section>
+
+<div class="filtros-wrap" id="filtros-bar">
+  <div class="busqueda-wrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/></svg>
+    <input type="text" id="buscador" placeholder="Buscar producto..." oninput="filtrarBusqueda()">
+  </div>
+</div>
+<section class="catalogo-wrap" id="catalogo">
+  <div class="catalogo-header">
+    <div><div class="sec-label">Productos y servicios</div><div class="sec-title">Encuentra lo que tu mascota necesita</div></div>
+    <div class="catalogo-count" id="cont-count"></div>
+  </div>
+  <div id="productos"></div>
+</section>
+
+<section class="beneficios-sec" id="beneficios">
+  <div class="sec-centro"><div class="sec-label">Conoce KMVetPetshop</div><div class="sec-title">Cuidado y compras en un mismo lugar</div></div>
+  <div class="beneficios-grid">
+    <div class="bcard"><div class="bcard-icono">🐾</div><h3>Servicios y productos</h3><p>Encuentra baño e higiene, valoraciones médicas, alimentos y accesorios en el mismo negocio.</p></div><div class="bcard"><div class="bcard-icono">🚲</div><h3>Domicilios en Suba</h3><p>Recibe tu pedido en aproximadamente 1 día hábil. Consulta cobertura y posibles recargos.</p></div><div class="bcard"><div class="bcard-icono">🛍️</div><h3>Recogida en el negocio</h3><p>También puedes recoger tus productos personalmente. Coordina tu visita por WhatsApp.</p></div><div class="bcard"><div class="bcard-icono">🩺</div><h3>Orientación para su cuidado</h3><p>Consulta los servicios de valoración médica y las recomendaciones de cuidado y bienestar.</p></div>
+  </div>
+</section>
+
+<section class="recs-sec">
+  <div class="sec-label">Explora nuestro catálogo</div>
+  <div class="sec-title">Para el cuidado de tu mascota</div>
+  <div class="recs-grid" id="recomendados"></div>
+</section>
+
+<section class="top-sec">
+  <div class="sec-label">Favoritos de la comunidad</div>
+  <div class="sec-title">Los más votados para mascotas</div>
+  <div class="top-grid" id="top"></div>
+</section>
+
+<section class="duelo-sec">
+  <div class="sec-label">Elige tu favorito</div>
+  <div class="sec-title">¿Qué elegirías para tu mascota?</div>
+  <div class="duelo-arena" id="duelo"></div>
+  <p class="duelo-info">Vota por tu opción favorita y ayúdala a subir en el ranking. Esta votación no es una recomendación médica.</p>
+</section>
+
+<section class="horarios-sec">
+  <div class="sec-label">Planea tu visita</div>
+  <div class="sec-title">Atención y peluquería</div>
+  <ul class="horarios-lista"><li>🕒 [object Object]</li><li>🕒 [object Object]</li></ul>
+</section>
+<section class="seccion-personalizada" id="custom-datos-por-confirmar">
+<section style="background:var(--bg2);color:var(--tx);padding:24px;border-radius:var(--r);margin:24px auto;max-width:1100px;border:1px solid var(--tx2)"><p class="sec-label">Prototipo académico · Datos pendientes</p><h2 class="sec-title">Confirma tu cotización antes de pedir</h2><p>Los precios «desde» son valores iniciales y no cubren todas las referencias. El baño para pelo corto cuesta $60.000, el de pelo largo cuesta desde $75.000 y el servicio médico desde $80.000. Confirma las tarifas finales por WhatsApp antes de agendar o pedir.</p><p>Falta confirmar el máximo de juguetería, modelos y tallas, los barrios con contraentrega y el alcance del recargo de $10.000 por servicios lejanos.</p><p>Los productos y servicios tienen fotos propias del negocio. Logo: pendiente de subir. Red social informada: KMVetPetshop; plataforma y enlace por confirmar. Los medios de pago adicionales y el eslogan tampoco están confirmados.</p></section>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-marca"><h3>KMVetPetshop</h3><p>KMVetPetshop · Bogotá. Servicios de cuidado y productos para mascotas, con domicilios en Suba y recogida en el negocio.</p></div>
+    <div class="footer-col"><h4>Contacto</h4><ul><li><a href="https://wa.me/573332688351" target="_blank" rel="noopener">WhatsApp: +57 3332688351</a></li><li>📍 Bogotá</li></ul></div>
+    <div class="footer-col"><h4>Pagos</h4><ul><li>Efectivo contraentrega</li><li>Transferencia contraentrega</li></ul></div>
+    <div class="footer-col"><h4>Categorías</h4><ul><li>Bienestar e higiene</li><li>Salud</li><li>Entretenimiento</li><li>Alimentos</li><li>Estilo</li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 KMVetPetshop — Todos los derechos reservados</span>
+    <span>Consulta por WhatsApp los detalles de tu pedido o servicio.</span>
+  </div>
+  <div class="footer-credito">
+    Creada con <strong>Harvys</strong> · Prof. Harvey Sanabria ·
+    <a href="https://wa.me/573103323843?text=Hola%20Profesor%20Harvey%2C%20vi%20una%20tienda%20creada%20con%20Harvys%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n." target="_blank" rel="noopener">WhatsApp 310 332 3843</a>
+  </div>
+</footer>
+
+<!-- Copia del proyecto para volver a abrirlo en Harvys (botón "Abrir"). No la borres. -->
+<script type="application/json" id="harvys-proyecto">{"negocio":{"nombre":"KMVetPetshop","descripcion":"Servicios de baño e higiene, valoraciones médicas y recomendaciones de cuidado y bienestar para mascotas. Venta de productos de aseo, alimentos, juguetes, ropa y accesorios.","eslogan":"[POR COMPLETAR]","ciudad":"Bogotá","cobertura":"Domicilios en Suba en aproximadamente 1 día hábil y recogida en el negocio. No realiza envíos nacionales. Recargo de $10.000 para servicios lejanos; alcance por confirmar.","whatsapp":"573332688351","instagram":"","facebook":"","tiktok":"","horarios":["[object Object]","[object Object]"],"logo":""},"tema":{"nombreEstilo":"Huellitas cercanas","modo":"claro","colores":{"primario":"#7040A0","textoSobrePrimario":"#FFFFFF","fondo":"#FAF7FF","fondoAlterno":"#DEEFFB","tarjeta":"#FFFFFF","texto":"#2C203D","textoSuave":"#665374","acento":"#246C9C"},"fuentes":{"titulos":"Fredoka","cuerpo":"Nunito"},"titulosMayusculas":false,"radio":30,"animaciones":"media","fondoEfecto":"puntos","hero":"centrado","tarjetas":"elevadas"},"textos":{"heroEtiqueta":"🐾 Cuidado para mascotas en Bogotá","heroTitulo":"KMVet","heroTituloResaltado":"Petshop","heroSubtitulo":"Baño, atención médica y productos para el cuidado de tu mascota. Conoce nuestros servicios y consulta por WhatsApp.","heroBoton":"Explorar productos y servicios","heroImagen":"","estadisticas":[{"valor":"{productos}","etiqueta":"Productos y servicios"},{"valor":"Suba","etiqueta":"Zona de domicilios"},{"valor":"1 día hábil","etiqueta":"Entrega aproximada"}],"bannerEtiqueta":"Cuidado y bienestar","bannerTitulo":"Todo para cuidar a","bannerTituloResaltado":"tu mascota","bannerTexto":"Encuentra servicios de baño, valoraciones médicas, alimentos, juguetes y ropa. Domicilios en Suba y recogida en el negocio. Consulta las tarifas finales y la disponibilidad antes de confirmar tu pedido.","chips":["Domicilios en Suba","Recogida en el negocio","Contraentrega desde $50.000","Atención de lunes a sábado"],"catalogoEtiqueta":"Productos y servicios","catalogoTitulo":"Encuentra lo que tu mascota necesita","botonAgregar":"+ Agregar a mi consulta","beneficiosEtiqueta":"Conoce KMVetPetshop","beneficiosTitulo":"Cuidado y compras en un mismo lugar","recomendadosEtiqueta":"Explora nuestro catálogo","recomendadosTitulo":"Para el cuidado de tu mascota","topEtiqueta":"Favoritos de la comunidad","topTitulo":"Los más votados para mascotas","dueloEtiqueta":"Elige tu favorito","dueloTitulo":"¿Qué elegirías para tu mascota?","dueloInfo":"Vota por tu opción favorita y ayúdala a subir en el ranking. Esta votación no es una recomendación médica.","testimoniosEtiqueta":"Experiencias de clientes","testimoniosTitulo":"Historias de sus mascotas","horariosEtiqueta":"Planea tu visita","horariosTitulo":"Atención y peluquería","footerTexto":"KMVetPetshop · Bogotá. Servicios de cuidado y productos para mascotas, con domicilios en Suba y recogida en el negocio.","footerFrase":"Consulta por WhatsApp los detalles de tu pedido o servicio.","carritoTitulo":"Tu consulta de productos y servicios","botonPagar":"Consultar por WhatsApp"},"productos":[{"id":"kmv-banos","nombre":"Baño para mascotas — pelo corto","precio":60000,"categoria":"Bienestar e higiene","imagen":"foto:icgw03","descripcion":"Servicio de baño para mascotas de pelo corto. Tarifa informada: $60.000. Coordina la cita por WhatsApp.","opciones":null,"destacado":true},{"id":"kmv-medicamentos","nombre":"Medicamentos — desde $15.000","precio":15000,"categoria":"Salud","imagen":"foto:0sskqj","descripcion":"Medicamentos desde $15.000 hasta $200.000, según la referencia. Referencias, presentaciones e indicaciones: [POR COMPLETAR]. Confirma el producto y su precio con el negocio; no sustituye una valoración veterinaria.","opciones":null,"destacado":false},{"id":"kmv-jugueteria","nombre":"Juguetería — desde $15.000","precio":15000,"categoria":"Entretenimiento","imagen":"foto:2xfht4","descripcion":"Precio inicial informado: $15.000. La entrevista indica un máximo de «60», cuyo valor debe confirmarse. Modelos y precio de cada referencia: [POR COMPLETAR]. El total de la consulta puede variar según el juguete elegido.","opciones":null,"destacado":true},{"id":"kmv-servicio-medico","nombre":"Servicio médico — desde $80.000","precio":80000,"categoria":"Salud","imagen":"foto:05h01g","descripcion":"Valoración médica para mascotas desde $80.000. Confirma la tarifa final según el tipo de consulta y agenda por WhatsApp.","opciones":null,"destacado":true},{"id":"kmv-comida","nombre":"Alimentos para mascotas — desde $20.000","precio":20000,"categoria":"Alimentos","imagen":"foto:gidd37","descripcion":"Rango informado: $20.000 a $50.000. Marcas, presentaciones y precio por referencia: [POR COMPLETAR]. El precio mostrado es el valor inicial del rango; confirma el alimento elegido con el negocio.","opciones":null,"destacado":true},{"id":"kmv-ropa","nombre":"Ropa para mascotas — desde $15.000","precio":15000,"categoria":"Estilo","imagen":"foto:5fed5v","descripcion":"Rango informado: $15.000 a $60.000. Modelos y tallas disponibles: [POR COMPLETAR]. Confirma talla y precio antes de realizar tu pedido.","opciones":null,"destacado":false},{"id":"kmv-banos-pelo-largo","nombre":"Baño para mascotas — pelo largo desde $75.000","precio":75000,"categoria":"Bienestar e higiene","imagen":"foto:icgw03","descripcion":"Servicio de baño para mascotas de pelo largo, desde $75.000. Confirma la tarifa final y coordina tu cita por WhatsApp.","opciones":null,"destacado":false}],"beneficios":[{"icono":"🐾","titulo":"Servicios y productos","texto":"Encuentra baño e higiene, valoraciones médicas, alimentos y accesorios en el mismo negocio."},{"icono":"🚲","titulo":"Domicilios en Suba","texto":"Recibe tu pedido en aproximadamente 1 día hábil. Consulta cobertura y posibles recargos."},{"icono":"🛍️","titulo":"Recogida en el negocio","texto":"También puedes recoger tus productos personalmente. Coordina tu visita por WhatsApp."},{"icono":"🩺","titulo":"Orientación para su cuidado","texto":"Consulta los servicios de valoración médica y las recomendaciones de cuidado y bienestar."}],"testimonios":[],"pagos":{"metodos":[{"nombre":"Efectivo contraentrega","icono":"💵","tipo":"contraentrega"},{"nombre":"Transferencia contraentrega","icono":"🏦","tipo":"transferencia"}],"numeroTransferencia":"3332688351","titular":"[POR COMPLETAR]","contraentregaDetalle":"Pedido mínimo: $50.000. Cobro en efectivo o transferencia; recibe el dueño del negocio. Sin costo adicional por contraentrega. La entrevista indica $10.000 adicionales para servicios lejanos: confirmar alcance. Barrios habilitados para contraentrega: [POR COMPLETAR]. Otros medios de pago: [POR COMPLETAR]."},"backend":{"url":"https://script.google.com/macros/s/AKfycbwRrRqJReodTVUiCgY2qyYLu1Z_a9KaifQp3Vc6qpf5TdSGWgXSAlO5dnD0BHmGV161/exec"},"asistente":{"activo":true,"nombre":"Kimi","saludo":"¡Hola! Soy Kimi 🐾 Te ayudo a conocer los productos, servicios y horarios de KMVetPetshop. Para tarifas pendientes o recomendaciones médicas, consulta al negocio por WhatsApp."},"secciones":["banner","catalogo","beneficios","recomendados","top","duelo","horarios","custom:datos-por-confirmar"],"personalizado":{"css":"","secciones":[{"id":"datos-por-confirmar","html":"\u003csection style=\"background:var(--bg2);color:var(--tx);padding:24px;border-radius:var(--r);margin:24px auto;max-width:1100px;border:1px solid var(--tx2)\">\u003cp class=\"sec-label\">Prototipo académico · Datos pendientes\u003c/p>\u003ch2 class=\"sec-title\">Confirma tu cotización antes de pedir\u003c/h2>\u003cp>Los precios «desde» son valores iniciales y no cubren todas las referencias. El baño para pelo corto cuesta $60.000, el de pelo largo cuesta desde $75.000 y el servicio médico desde $80.000. Confirma las tarifas finales por WhatsApp antes de agendar o pedir.\u003c/p>\u003cp>Falta confirmar el máximo de juguetería, modelos y tallas, los barrios con contraentrega y el alcance del recargo de $10.000 por servicios lejanos.\u003c/p>\u003cp>Los productos y servicios tienen fotos propias del negocio. Logo: pendiente de subir. Red social informada: KMVetPetshop; plataforma y enlace por confirmar. Los medios de pago adicionales y el eslogan tampoco están confirmados.\u003c/p>\u003c/section>"}]}}</script>
+<script type="application/json" id="harvys-rutas">{"kmv-banos":"img/banos-icgw03.jpg","kmv-medicamentos":"img/medicamentos-0sskqj.jpg","kmv-jugueteria":"img/jugueteria-2xfht4.jpg","kmv-servicio-medico":"img/servicio-medico-05h01g.jpg","kmv-comida":"img/comida-gidd37.jpg","kmv-ropa":"img/ropa1-5fed5v.jpg","kmv-banos-pelo-largo":"img/banos-icgw03.jpg"}</script>
+<script src="script.js"></script>
+</body>
+</html>
